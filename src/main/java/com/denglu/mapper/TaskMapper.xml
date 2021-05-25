@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.denglu.mapper.TaskMapper">
+
+    <resultMap type="com.denglu.entity.Task" id="ResultMap">
+        <result property="tId" column="TID"></result>
+        <association property="taskDetail" select="com.denglu.mapper.TaskDetailMapper.findTaskDetailByTId" column="TID"></association>
+    </resultMap>
+
+    <select id="findTaskByTID" resultMap="ResultMap">
+        select * from Task where TID = #{tid}
+    </select>
+    <select id="findUserByUID" resultType="java.lang.String">
+        select UserName from User where ID = #{uid}
+    </select>
+    
+    <select id="findTaskByMidAndPosition" resultMap="ResultMap" parameterType="com.denglu.entity.Tool">
+        select * from Task where MID = #{mid} and `Position` = #{position}
+    </select>
+
+    <select id="findTaskByPID" resultMap="ResultMap">
+        select * from Task where PID = #{pid}
+    </select>
+    <select id="findTaskByMID" resultMap="ResultMap">
+        select * from Task where MID = #{mid}
+    </select>
+    <select id="findUIDByUName" resultType="java.lang.String">
+        select ID from `User` where UserName = #{username}
+    </select>
+
+    <insert id="addTask" keyProperty="tId" useGeneratedKeys="true" parameterType="com.denglu.entity.Task">
+        INSERT INTO Task(TID,PID,TName,Description,Creator,CreatedTime,Updater,UpdatedTime)
+        VALUES (null,#{pId},#{tName},#{description},#{creator},#{createdTime},#{updater},#{updatedTime})
+    </insert>
+    
+    <delete id="deleteTaskByTID" parameterType="com.denglu.entity.Task">
+        delete from Task where TID=#{tId}
+    </delete>
+
+    <delete id="deleteTaskByPID" parameterType="com.denglu.entity.Task">
+        delete from Task where PID=#{pid}
+    </delete>
+    
+    <update id="updateTaskByTID" parameterType="com.denglu.entity.Task">
+        update Task set TName=#{tName},Description=#{description},Updater=#{updater},UpdatedTime=#{updatedTime} where TID=#{tId};
+    </update>
+    
+    <update id="updateMID" parameterType="com.denglu.entity.Task">
+        update Task set MID=#{mId} where TID=#{tId}
+    </update>
+    
+    <update id="updateTaskStatus">
+        update Task set TaskStatus=#{taskStatus} where TID=#{tId}
+    </update>
+    
+    <update id="updatePosition">
+         update Task set Position=#{position},Information=#{information} where TID=#{tId}
+    </update>
+</mapper>
+
+

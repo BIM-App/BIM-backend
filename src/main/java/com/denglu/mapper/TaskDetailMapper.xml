@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.denglu.mapper.TaskDetailMapper">
+
+    <resultMap type="com.denglu.entity.TaskDetail" id="Map">
+        <id property="tid" column="TID" />
+        <collection property="task" ofType="com.denglu.entity.Task"
+                    column="tid" select="com.denglu.mapper.TaskMapper.findTaskByTID" />
+    </resultMap>
+
+    <select id="findTaskDetailByReceiver" resultMap="Map">
+        select * from TaskDetail where Receiver = #{receiver};
+    </select>
+    <select id="findTaskDetailByTId" resultType="com.denglu.entity.TaskDetail">
+        select * from TaskDetail where TID = #{tid};
+    </select>
+    
+    <insert id="addTaskDetail" parameterType="com.denglu.entity.TaskDetail">
+        INSERT INTO TaskDetail(ID,TID,`Publisher`,Receiver,Creator,CreatedTime,Updater,UpdatedTime)
+        VALUES (null,#{tid},#{publisher},#{receiver},#{creator},#{createdTime},#{updater},#{updatedTime})z
+    </insert>
+    
+    <delete id="deleteTaskDetailByID" parameterType="com.denglu.entity.TaskDetail">
+        delete from TaskDetail where ID = #{id};
+    </delete>
+    <delete id="deleteTaskDetailByTID" parameterType="com.denglu.entity.TaskDetail">
+        delete from TaskDetail where TID = #{tid};
+    </delete>
+
+    <update id="updateTaskDetailByTID" parameterType="com.denglu.entity.TaskDetail">
+        update TaskDetail set ReplyMessage=#{replyMessage},Updater=#{updater},UpdatedTime=#{updatedTime} where TID=#{tid};
+    </update>
+
+    <update id="updatePhoto" parameterType="java.lang.String">
+        update TaskDetail set Photo=#{photo} where TID=#{tid}
+    </update>
+
+    <update id="updateTaskDetailReceiverByTID" parameterType="java.lang.String">
+        update TaskDetail set Receiver = #{receiver} where TID = #{tid}
+    </update>
+</mapper>
